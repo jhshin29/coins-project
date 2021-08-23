@@ -1,0 +1,36 @@
+package model.dto;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity
+public class Member {
+	
+	@Id
+	@Column(name="member_id")
+	private String memberId;
+	
+	@Column(name="phone_num")
+	private String phoneNum;
+	
+	@Column(name="real_name")
+	private String realName;
+	
+	private String zipcode;
+	
+	@Column(name="hold_money")
+	private Long holdMoney;
+	
+}
