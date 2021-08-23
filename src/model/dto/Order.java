@@ -1,8 +1,10 @@
 package model.dto;
 
 import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +32,7 @@ public class Order {
 	@Column(name="total_price")
 	private int totalPrice;
 	
+	@ManyToOne
 	@Column(name="member_id")
 	private Member memberId;
 	
@@ -37,3 +40,4 @@ public class Order {
 	private Coin coinId;
 	
 }
+
