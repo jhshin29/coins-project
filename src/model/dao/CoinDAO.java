@@ -1,106 +1,103 @@
 package model.dao;
 
-import java.sql.SQLException;
-
-
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import lombok.extern.slf4j.Slf4j;
 import model.dto.Coin;
-import model.dto.Member;
 import util.PublicCommon;
 
-
+@Slf4j
 public class CoinDAO {
-	
+	private static Coin instance = new Coin();
+	public static Coin getInstance() {
+		return instance;
+	}
 	public static Coin getCoin(String coinId) {
-		Coin coin = null;
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		tx.begin();
+		Coin coin = null;
 		try {
+			tx.begin();
 			coin = em.find(Coin.class, coinId);
-		}catch(Exception e) {
+			tx.commit();
+		}catch (RuntimeException e) {
 			tx.rollback();
-		}finally {
+			e.printStackTrace();
+		} finally {
 			em.close();
 			em = null;
 		}
 		return coin;
 	}
 	
-	public static void updateCoin(String coinId) {
-		Coin coin =null;
+	public List<Coin> getAllCoins() {
 		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		tx.begin();
+		List<Coin> coins = null;
+		
 		try {
-		}catch(Exception e) {
-		}finally {
-			em.close();
-			em = null;
-		}
-	}
-	
-	public static List<Coin> getAllMembers() throws SQLException{
-		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		List<Coin> list = null;
-		tx.begin();
-		try {
-			list = em.createQuery("select m from coin m", Coin.class).getResultList();
-		} catch(Exception e) {
-			tx.rollback();
+			coins = em.createQuery("SELECT E FROM Coin E").getResultList();
+		}catch (RuntimeException e) {
+			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
 		}
-		return list;
+		return coins;
 	}
 	
-	public static void addCoin(Coin coin) {
+	public void insertCoin(Coin coin) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		tx.begin();
 		try {
+			tx.begin();
 			em.persist(coin);
-		}catch(Exception e) {
+			tx.commit();
+		}catch (RuntimeException e) {
 			tx.rollback();
-		}finally {
+			e.printStackTrace();
+		} finally {
 			em.close();
 			em = null;
 		}
 	}
 	
-	public static Coin selectCoin(String coinId) {
+	public void updateCoin(String coinId, long totalQty) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Coin selectedCoin = null;
-		tx.begin();
+		Coin findCoin = em.find(Coin.class, totalQty);
 		try {
-			selectedCoin = em.find(Coin.class, coinId);
-		}catch(Exception e) {
+			tx.begin();
+			findCoin.setTotalQty(totalQty);
+			tx.commit();
+		}catch (RuntimeException e) {
 			tx.rollback();
-		}finally {
+			e.printStackTrace();
+		} finally {
 			em.close();
 			em = null;
 		}
-		return selectedCoin;
 	}
 	
-	public static void deleteCoin(Coin coin) {
+	public void deleteCoin(String coinId) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		tx.begin();
+		Coin findCoin = em.find(Coin.class, coinId);
 		try {
-			em.remove(coin);
-		}catch(Exception e) {
+			tx.begin();
+			
+			em.remove(findCoin);
+			
+			tx.commit();
+		}catch (RuntimeException e) {
 			tx.rollback();
-		}finally {
+			e.printStackTrace();
+		} finally {
 			em.close();
 			em = null;
 		}
 	}
 }
+
