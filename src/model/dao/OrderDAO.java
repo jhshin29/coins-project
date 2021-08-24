@@ -37,10 +37,10 @@ public class OrderDAO {
 		System.out.println(getOrder(1));
 		System.out.println(getAllOrders());
 		
-		deleteOrder(2);
-		System.out.println(getAllOrders());
+//		deleteOrder(4);
+//		System.out.println(getAllOrders());
 		
-		updateOrder(1, 1000);
+		updateOrder(1, 100);
 		System.out.println(getOrder(1));
 	}
 	
@@ -106,7 +106,8 @@ public class OrderDAO {
 		
 		try {
 			tx.begin();
-
+			
+			System.out.println("?? 확인");
 			findOrder.setOrderQty(orderQty);
 			
 			tx.commit();
