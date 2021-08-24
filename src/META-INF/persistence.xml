@@ -3,7 +3,7 @@
 	<persistence-unit name="oracleDB">
 		<class>model.dto.Coin</class>
 		<class>model.dto.Member</class>
-		<class>model.dto.Order</class>
+		<class>model.dto.Orders</class>
 	
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver" />
