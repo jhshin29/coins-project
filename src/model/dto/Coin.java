@@ -20,9 +20,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+//@ToString
 @Entity
 public class Coin {
+
 	@Id
 	@Column(name="coin_id")
 	private String coinId;
@@ -35,4 +36,10 @@ public class Coin {
 	
 	@OneToMany(mappedBy="coinId", cascade=CascadeType.REMOVE)
 	List<Orders> orders = new ArrayList<>();
+	
+	@Override
+	public String toString() {
+		return "Coin [coinId=" + coinId + ", coinPrice=" + coinPrice + ", totalQty=" + totalQty + "]";
+	}
+	
 }

@@ -5,92 +5,70 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import org.junit.jupiter.api.Test;
-
+import model.dto.Coin;
+import model.dto.Member;
 import model.dto.Orders;
 import util.PublicCommon;
 
 public class OrderDAO {
-	
-	private static Orders instance = new Orders();
-	
-	public static Orders getInstance() {
-		return instance;
-	}
-	
-	@Test
-	public void m1() {
-		
-		Orders newOrder = new Orders();
-		newOrder.setOrderDate("2021-09-23");
-		newOrder.setOrderQty(80);
-		newOrder.setTotalPrice(1200000);
-		
-		Orders newOrder2 = new Orders();
-		newOrder2.setOrderDate("2021-09-24");
-		newOrder2.setOrderQty(20);
-		newOrder2.setTotalPrice(200000);
-		
-		insertOrder(newOrder);
-		insertOrder(newOrder2);
-		
-		System.out.println(getOrder(1));
-		System.out.println(getAllOrders());
-		
-//		deleteOrder(4);
-//		System.out.println(getAllOrders());
-		
-		updateOrder(1, 100);
-		System.out.println(getOrder(1));
-	}
-	
+
 	public static Orders getOrder(int orderId) {
-		
+
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Orders order = null;
-		
+
 		try {
 			tx.begin();
 			order = em.find(Orders.class, orderId);
 			tx.commit();
-		}catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
 		}
-		
+
 		return order;
 	}
-	
-	public List<Orders> getAllOrders() {
+
+	public static List<Orders> getAllOrders() {
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Orders> orders = null;
-		
+
 		try {
 			orders = em.createQuery("SELECT E FROM Orders E").getResultList();
-		}catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
 		}
-		
+
 		return orders;
 	}
-	
-	public void insertOrder(Orders order) {
+
+	public static void insertOrder(String memberId, String coinId, Orders order) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
+		Orders newOrder = order;
+		Member member = em.find(Member.class, memberId);
+		Coin coin = em.find(Coin.class, coinId);
+
 		try {
 			tx.begin();
 
-			em.persist(order);
+			newOrder.setMemberId(member);
+			newOrder.setCoinId(coin);
+			newOrder.setTotalPrice(coin.getCoinPrice() * order.getOrderQty());
 			
+			em.persist(newOrder);
+			
+			member.setHoldMoney(member.getHoldMoney()-newOrder.getTotalPrice());
+
 			tx.commit();
-		}catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
@@ -98,20 +76,23 @@ public class OrderDAO {
 			em = null;
 		}
 	}
-	
-	public void updateOrder(int orderId, int orderQty) {
+
+	public static void updateOrder(int orderId, int orderQty) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Orders findOrder = em.find(Orders.class, orderId);
-		
+		Member member = findOrder.getMemberId();
+
 		try {
 			tx.begin();
-			
-			System.out.println("?? 확인");
+
 			findOrder.setOrderQty(orderQty);
+			member.setHoldMoney(member.getHoldMoney()+findOrder.getTotalPrice());
+			findOrder.setTotalPrice(findOrder.getOrderQty()*findOrder.getCoinId().getCoinPrice());
+			member.setHoldMoney(member.getHoldMoney()-findOrder.getTotalPrice());
 			
 			tx.commit();
-		}catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
@@ -119,8 +100,8 @@ public class OrderDAO {
 			em = null;
 		}
 	}
-	
-	public void deleteOrder(int orderId) {
+
+	public static void deleteOrder(int orderId){
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Orders findOrder = em.find(Orders.class, orderId);
@@ -128,9 +109,9 @@ public class OrderDAO {
 			tx.begin();
 
 			em.remove(findOrder);
-			
+
 			tx.commit();
-		}catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
@@ -138,5 +119,5 @@ public class OrderDAO {
 			em = null;
 		}
 	}
-	
+
 }
