@@ -12,7 +12,7 @@ import util.PublicCommon;
 
 public class StartView {
 
-	@Test
+//	@Test
 	void m1() {
 		EntityManager em = PublicCommon.getEntityManager();
 		
