@@ -1,15 +1,9 @@
 package model.dao;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.FieldIndexSelector;
 
 import model.dto.Member;
 import util.PublicCommon;
@@ -56,14 +50,12 @@ public class MemberDAO {
 	}
 	
 	//3. 회원 전체 조회
-	public static List<Member> getAllMember() {
+	public static List<Member> getAllMembers() throws Exception {
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Member> members = null;
 		
 		try {
 			members = em.createQuery("select m from Member m", Member.class).getResultList();
-		} catch (Exception e) {
-            e.printStackTrace();
         } finally {
 			em.close();
 			em = null;
@@ -73,14 +65,12 @@ public class MemberDAO {
 	
 	
 	//4. 회원 아이디로 단일 조회
-	public static Member getMember(String memberId) {
+	public static Member getMember(String memberId) throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		Member member = null;
 		
 		try {
 			member = (Member)em.find(Member.class, memberId);
-		} catch (Exception e) {
-            e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
@@ -89,7 +79,7 @@ public class MemberDAO {
 	}
 	
 	//5. 회원 삭제
-	public static void deleteMember(String memberId) {
+	public static void deleteMember(String memberId) throws Exception {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Member member = null;
