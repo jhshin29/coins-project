@@ -1,54 +1,106 @@
 package model.dao;
 
+import java.sql.SQLException;
+
+
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Consumer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 
 import model.dto.Coin;
+import model.dto.Member;
+import util.PublicCommon;
 
 
 public class CoinDAO {
-	private EntityManager entityManager;
 	
-	public Optional<Coin> get(String coinId) {
-		return Optional.ofNullable(entityManager.find(Coin.class, coinId));
-	}
-	
-	public List<Coin> getAllCoins(){
-		Query query = entityManager.createQuery("SELECT E FROM Coin E");
-		return query.getResultList();
-	}
-	
-	public void save(Coin coin) {
-		executeInsideTransaction(entityManager -> entityManager.persist(coin));
-	}
-	
-	public void update(Coin coin, Object[] params) {
-		coin.setCoinId((String) Objects.requireNonNull(params[0], "코인 Id 값이 null이 될 수 없습니다."));
-		coin.setCoinPrice((Long) Objects.requireNonNull(params[1], "코인 값이 null이 될 수 없습니다"));
-		coin.setTotalQty((Long) Objects.requireNonNull(params[2], "총 계산이 null입니다."));
-		executeInsideTransaction(entityManager -> entityManager.merge(coin));
-	}
-	
-	public void delete(Coin coin) {
-		executeInsideTransaction(entityManager -> entityManager.remove(coin));
-	}
-	
-	private void executeInsideTransaction(Consumer<EntityManager> action) {
-		EntityTransaction tx = entityManager.getTransaction();
+	public static Coin getCoin(String coinId) {
+		Coin coin = null;
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
 		try {
-			tx.begin();
-			action.accept(entityManager);
-			tx.commit();
-		}catch (RuntimeException e) {
+			coin = em.find(Coin.class, coinId);
+		}catch(Exception e) {
 			tx.rollback();
-			throw e;
+		}finally {
+			em.close();
+			em = null;
 		}
-		
+		return coin;
+	}
+	
+	public static void updateCoin(String coinId) {
+		Coin coin =null;
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		try {
+		}catch(Exception e) {
+		}finally {
+			em.close();
+			em = null;
+		}
+	}
+	
+	public static List<Coin> getAllMembers() throws SQLException{
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		List<Coin> list = null;
+		tx.begin();
+		try {
+			list = em.createQuery("select m from coin m", Coin.class).getResultList();
+		} catch(Exception e) {
+			tx.rollback();
+		} finally {
+			em.close();
+			em = null;
+		}
+		return list;
+	}
+	
+	public static void addCoin(Coin coin) {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		try {
+			em.persist(coin);
+		}catch(Exception e) {
+			tx.rollback();
+		}finally {
+			em.close();
+			em = null;
+		}
+	}
+	
+	public static Coin selectCoin(String coinId) {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		Coin selectedCoin = null;
+		tx.begin();
+		try {
+			selectedCoin = em.find(Coin.class, coinId);
+		}catch(Exception e) {
+			tx.rollback();
+		}finally {
+			em.close();
+			em = null;
+		}
+		return selectedCoin;
+	}
+	
+	public static void deleteCoin(Coin coin) {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		try {
+			em.remove(coin);
+		}catch(Exception e) {
+			tx.rollback();
+		}finally {
+			em.close();
+			em = null;
+		}
 	}
 }
