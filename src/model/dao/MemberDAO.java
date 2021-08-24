@@ -109,6 +109,7 @@ public class MemberDAO {
 	    } finally {
 	    	em.close();
 	    	em = null;
+
 		}
 	}
 }

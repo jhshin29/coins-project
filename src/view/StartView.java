@@ -14,6 +14,7 @@ import util.PublicCommon;
 
 public class StartView {
 	@Test
+
 	void m1() {
 
 //		System.out.println("***** 1. 회원가입  *****");
