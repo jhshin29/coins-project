@@ -1,8 +1,12 @@
 package model.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,5 +36,8 @@ public class Member {
 	
 	@Column(name="hold_money")
 	private Long holdMoney;
+	
+	@OneToMany(mappedBy="memberId")
+	List<Orders> orders = new ArrayList<>();
 	
 }
