@@ -24,6 +24,7 @@ import lombok.ToString;
 @Entity
 @SequenceGenerator(name="order_seq_gen", sequenceName="order_seq_id",initialValue=1, allocationSize=1)
 public class Orders {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="order_seq_gen")
 	@Column(name="order_id")
@@ -36,20 +37,25 @@ public class Orders {
 	private int orderQty;
 	
 	@Column(name="total_price")
-	private int totalPrice;
+	private long totalPrice;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="member_id")
 	private Member memberId;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="coin_id")
 	private Coin coinId;
+	
+	public Orders(String orderDate, int orderQty) {
+		this.orderDate = orderDate;
+		this.orderQty = orderQty;
+	}
 
 	@Override
 	public String toString() {
 		return "Orders [orderId=" + orderId + ", orderDate=" + orderDate + ", orderQty=" + orderQty + ", totalPrice="
-				+ totalPrice + "]";
+				+ totalPrice + ", memberId=" + memberId.getMemberId() + ", coinId=" + coinId.getCoinId() + "]";
 	}
-	
+
 }
