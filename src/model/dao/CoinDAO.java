@@ -29,9 +29,9 @@ public class CoinDAO {
 	}
 	
 	public void update(Coin coin, Object[] params) {
-		coin.setCoinId((String) Objects.requireNonNull(params[0], "ì½”ì¸ Id ê°’ì´ nullì´ ë  ìˆ˜ ì—†ìŠµë‹ˆë‹¤."));
-		coin.setCoinPrice((Long) Objects.requireNonNull(params[1], "ì½”ì¸ ê°’ì´ nullì´ ë  ìˆ˜ ì—†ìŠµë‹ˆë‹¤"));
-		coin.setTotalQty((Long) Objects.requireNonNull(params[2], "ì´ ê³„ì‚°ì´ nullìž…ë‹ˆë‹¤."));
+		coin.setCoinId((String) Objects.requireNonNull(params[0], "ÄÚÀÎ Id °ªÀÌ nullÀÌ µÉ ¼ö ¾ø½À´Ï´Ù."));
+		coin.setCoinPrice((Long) Objects.requireNonNull(params[1], "ÄÚÀÎ °ªÀÌ nullÀÌ µÉ ¼ö ¾ø½À´Ï´Ù"));
+		coin.setTotalQty((Long) Objects.requireNonNull(params[2], "ÃÑ °è»êÀÌ nullÀÔ´Ï´Ù."));
 		executeInsideTransaction(entityManager -> entityManager.merge(coin));
 	}
 	
@@ -49,6 +49,5 @@ public class CoinDAO {
 			tx.rollback();
 			throw e;
 		}
-		
 	}
 }

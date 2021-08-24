@@ -29,7 +29,7 @@ public class StartView {
 			Member mem1 = new Member();
 			mem1.setMemberId("shinji03264");
 			mem1.setPhoneNum("010-2382-2938");
-			mem1.setRealName("ì‹ ì§€í˜œ");
+			mem1.setRealName("½ÅÁöÇý");
 			mem1.setZipcode("M3M0N2");
 			mem1.setHoldMoney(127894000L);
 			
