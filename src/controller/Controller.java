@@ -134,42 +134,55 @@ public class Controller {
 			e.printStackTrace();
 			EndView.messageView("코인이 존재하지 않습니다");
 		}
-
 	}
 
 	// 2. 전체 코인 리스트 조회
 	public static void getAllCoins() {
-		EndView.getAllCoinView(CoinDAO.getAllCoins());
+		try {
+			EndView.getAllCoinView(CoinDAO.getAllCoins());			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// 3. 코인 가격 변경
 	public static void changeCoinPrice(String coinId, Long coinPrice) {
 		try {
-			CoinDAO.updateCoin(coinId, coinPrice);
-			EndView.messageView("가격 변경 완료");
-		} catch (NullPointerException e) {
+			if (CoinDAO.updateCoin(coinId, coinPrice) == true) {
+				EndView.messageView("코인 가격 변경 조회를 합니다.");
+				getOneCoin(coinId);}
+			else {
+				EndView.messageView("일치하는 코인 아디가 존재하지 않습니다.");
+			}
+		}catch (Exception e) {
 			e.printStackTrace();
-			EndView.messageView("가격 변경에 실패하였습니다.");
+			EndView.messageView("코인 삭제에 실패하였습니다.");
 		}
 	}
 
 	// 4. 코인 추가
 	public static void addCoin(String coinId, Long coinPrice, Long totalQty) {
 		try {
-			CoinDAO.addCoin(coinId, coinPrice, totalQty);
-			EndView.messageView("코인 추가 완료");
-		} catch (NullPointerException e) {
-			EndView.messageView("올바른 코인 타입을 추가했는지 확인해주세요");
+			if(CoinDAO.addCoin(coinId, coinPrice, totalQty) == true){
+				EndView.messageView("코인기입을 합니다");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			EndView.messageView("코인 추가에 실패하였습니다");
 		}
 	}
 
 	// 5. 코인 삭제
 	public static void deleteCoin(String coinId) {
 		try {
-			CoinDAO.deleteCoin(coinId);
-			EndView.messageView("해당 코인 종류 삭제 완료");
-		} catch (NullPointerException e) {
-			EndView.messageView("없는 코인번호입니다. 다시 확인해주세요.");
+			if (CoinDAO.deleteCoin(coinId) == true) {
+				EndView.messageView("해당 코인 삭제 완료");
+			}else {
+				EndView.messageView("코인 삭제 완료");				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			EndView.messageView("코인삭제에 실패하였습니다");
 		}
 	}
 
