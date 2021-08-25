@@ -2,6 +2,7 @@ package view;
 
 import java.util.List;
 
+import model.dto.Coin;
 import model.dto.Member;
 import model.dto.Orders;
 
@@ -39,11 +40,24 @@ public class EndView {
 		}
 	}
 	
+	public static void getCoinView(Coin coin) {
+		if (coin != null) {
+			System.out.println(coin);
+		}else {
+			System.out.println("코인 내역이 존재하지 않습니다.");
+		}
+	}
+	
+	public static void getAllCoinView(List<Coin> coins) {
+		if (!coins.isEmpty()) {
+			coins.forEach(v -> System.out.println(v));
+		}else {
+			System.out.println("코인 리스트 조회가 불가능합니다.");
+		}
+	}
+	
 	// 예외가 아닌 단순 메세지 출력
 	public static void messageView(String message) {
 		System.out.println(message);
 	}
-
-
-	
 }

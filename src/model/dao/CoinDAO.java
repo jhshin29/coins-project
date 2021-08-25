@@ -5,27 +5,17 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import lombok.extern.slf4j.Slf4j;
 import model.dto.Coin;
 import util.PublicCommon;
 
-@Slf4j
 public class CoinDAO {
-	private static Coin instance = new Coin();
-	public static Coin getInstance() {
-		return instance;
-	}
-	public static Coin getCoin(String coinId) {
+	
+	// 코인 아이디로 단일 조회
+	public static Coin getCoin(String coinId) throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
 		Coin coin = null;
 		try {
-			tx.begin();
 			coin = em.find(Coin.class, coinId);
-			tx.commit();
-		}catch (RuntimeException e) {
-			tx.rollback();
-			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
@@ -33,14 +23,12 @@ public class CoinDAO {
 		return coin;
 	}
 	
-	public List<Coin> getAllCoins() {
+	// 코인 전체 조회
+	public static List<Coin> getAllCoins() {
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Coin> coins = null;
-		
 		try {
-			coins = em.createQuery("SELECT E FROM Coin E").getResultList();
-		}catch (RuntimeException e) {
-			e.printStackTrace();
+			coins = em.createQuery("SELECT E FROM Coin E", Coin.class).getResultList();
 		} finally {
 			em.close();
 			em = null;
@@ -48,12 +36,37 @@ public class CoinDAO {
 		return coins;
 	}
 	
-	public void insertCoin(Coin coin) {
+	// 코인 넣기
+	public static void addCoin(String coinId, Long coinPrice, Long totalQty){
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
+		Coin newCoin = new Coin();
+		
 		try {
 			tx.begin();
-			em.persist(coin);
+			newCoin.setCoinId(coinId);			
+			newCoin.setCoinPrice(coinPrice);
+			newCoin.setTotalQty(totalQty);
+			em.persist(newCoin);
+			tx.commit();
+		}catch(Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		}finally {
+			em.close();
+			em = null;
+		}
+	}
+	
+	// 코인 수정
+	public static void updateCoin(String coinId, Long coinPrice) {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		Coin findCoin = null;
+		try {
+			tx.begin();
+			findCoin = em.find(Coin.class, coinId);
+			findCoin.setCoinPrice(coinPrice);
 			tx.commit();
 		}catch (RuntimeException e) {
 			tx.rollback();
@@ -64,32 +77,15 @@ public class CoinDAO {
 		}
 	}
 	
-	public void updateCoin(String coinId, long totalQty) {
+	// 코인 삭제
+	public static void deleteCoin(String coinId){
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Coin findCoin = em.find(Coin.class, totalQty);
+		Coin findcoin = em.find(Coin.class, coinId);
 		try {
 			tx.begin();
-			findCoin.setTotalQty(totalQty);
-			tx.commit();
-		}catch (RuntimeException e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			em.close();
-			em = null;
-		}
-	}
-	
-	public void deleteCoin(String coinId) {
-		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		Coin findCoin = em.find(Coin.class, coinId);
-		try {
-			tx.begin();
-			
-			em.remove(findCoin);
-			
+			findcoin = (Coin)em.find(Coin.class, coinId);
+			em.remove(findcoin);
 			tx.commit();
 		}catch (RuntimeException e) {
 			tx.rollback();
