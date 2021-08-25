@@ -5,11 +5,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import lombok.extern.slf4j.Slf4j;
 import model.dto.Coin;
 import model.dto.Member;
 import model.dto.Orders;
 import util.PublicCommon;
 
+@Slf4j
 public class OrderDAO {
 
 	public static Orders getOrder(int orderId) {
@@ -81,17 +83,19 @@ public class OrderDAO {
 			newOrder.setTotalPrice(coin.getCoinPrice() * order.getOrderQty());
 			
 			if ((member.getHoldMoney() - newOrder.getTotalPrice()) >= 0) {
-				if((coin.getTotalQty()-order.getOrderQty()) >= 0) {
+				if ((coin.getTotalQty()-order.getOrderQty()) >= 0) {
 					em.persist(newOrder);
 					member.setHoldMoney(member.getHoldMoney() - newOrder.getTotalPrice());
 					coin.setTotalQty(coin.getTotalQty()-order.getOrderQty());
 					System.out.println("주문 등록 완료");
+					log.info(memberId+" 님이" +coinId+ " 를 구매하셨습니다.");
 				} else {
 					System.out.println("주문 수량이 전체 코인 갯수보다 많습니다. 수량을 줄여주세요.");
 				}
 			} else {
 				System.out.println("주문 금액이 현재 보유 금액을 초과합니다. 보유 금액을 확인해주세요.");
 			}
+			
 			
 			tx.commit();
 			
@@ -121,7 +125,7 @@ public class OrderDAO {
 			findOrder.setTotalPrice(findOrder.getOrderQty() * findOrder.getCoinId().getCoinPrice());
 			
 			if ((member.getHoldMoney() - findOrder.getTotalPrice()) >= 0) {
-				if((coin.getTotalQty() - findOrder.getOrderQty()) >= 0) {
+				if ((coin.getTotalQty() - findOrder.getOrderQty()) >= 0) {
 					member.setHoldMoney(member.getHoldMoney() - findOrder.getTotalPrice());
 					coin.setTotalQty(coin.getTotalQty() - findOrder.getOrderQty());
 					System.out.println("주문 등록 완료");
@@ -158,6 +162,7 @@ public class OrderDAO {
 			
 			em.remove(findOrder);
 
+			log.info(orderId +" 번 주문이 취소되었습니다.");
 			tx.commit();
 			
 		} catch (RuntimeException e) {

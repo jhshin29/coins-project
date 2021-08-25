@@ -5,15 +5,18 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import lombok.extern.slf4j.Slf4j;
 import model.dto.Coin;
 import util.PublicCommon;
 
+@Slf4j
 public class CoinDAO {
 	
 	// 코인 아이디로 단일 조회
 	public static Coin getCoin(String coinId) throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		Coin coin = null;
+		
 		try {
 			coin = em.find(Coin.class, coinId);
 		} finally {
@@ -27,6 +30,7 @@ public class CoinDAO {
 	public static List<Coin> getAllCoins() throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Coin> coins = null;
+		
 		try {
 			coins = em.createQuery("SELECT E FROM Coin E", Coin.class).getResultList();
 		} finally {
@@ -41,6 +45,7 @@ public class CoinDAO {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Coin coin = em.find(Coin.class, coinId);
+		
 		try {
 			tx.begin();
 			if (coin == null) {
@@ -48,15 +53,15 @@ public class CoinDAO {
 				newCoin.setCoinId(coinId);			
 				newCoin.setCoinPrice(coinPrice);
 				newCoin.setTotalQty(totalQty);
-			
 				em.persist(newCoin);
+				log.info(coinId+ " 이 추가되었습니다.");
 				tx.commit();
 				return true;
 			}
-		}catch(Exception e) {
+		} catch(Exception e) {
 			tx.rollback();
 			e.printStackTrace();
-		}finally {
+		} finally {
 			em.close();
 			em = null;
 		}
@@ -72,10 +77,11 @@ public class CoinDAO {
 		try {
 			tx.begin();
 			if (findCoin != null) {
-				findCoin.setCoinPrice(coinPrice);}
+				findCoin.setCoinPrice(coinPrice);
 				tx.commit();
 				return true;
-		}catch (Exception e) {
+			}
+		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
@@ -90,14 +96,16 @@ public class CoinDAO {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Coin findcoin = em.find(Coin.class, coinId);
+		
 		try {
 			tx.begin();
 			if (findcoin != null) {
 				em.remove(findcoin);
+				log.info(coinId+ " 이 삭제되었습니다.");
 				tx.commit();
 				return true;
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {

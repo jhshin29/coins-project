@@ -18,7 +18,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-//@ToString
 @Entity
 @SequenceGenerator(name="order_seq_gen", sequenceName="order_seq_id",initialValue=1, allocationSize=1)
 public class Orders {

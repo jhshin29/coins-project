@@ -17,7 +17,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-//@ToString
 @Entity
 public class Coin {
 
