@@ -53,9 +53,8 @@ public class Orders {
 	}
 
 	@Override
-	public String toString() {		
-		return "주문번호 : " + orderId + ", 주문날짜 : " + orderDate + ", 주문수량 : " + orderQty + ", 결제금액 : "
-		+ totalPrice + ", 회원ID : " + memberId.getMemberId() + ", 코인 : " + coinId.getCoinId();
+	public String toString() {
+		return " 주문 ID = " + orderId + " 주문 날짜 = " + orderDate + " 주문 수량 = " + orderQty + "총 가격 = " + totalPrice +
+				" 회원 ID = " + memberId + " 코인 ID " + coinId;
 	}
-
 }
