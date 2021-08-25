@@ -40,5 +40,28 @@ public class StartView {
 //		
 //		System.out.println("***** 5. 회원 삭제  *****");
 //		Controller.deleteMember("pse1120");
+		
+//		System.out.println("======== 존재하지 않는 코인 조회 =======");
+//		Controller.getOneCoin("123");
+//		
+//		System.out.println("========= 존재하는 코인 조회 ==========");
+//		Controller.getOneCoin("Bitcoin");
+//		
+//		System.out.println("======= 모든 코인 리스트");
+//		Controller.getAllCoins();
+//		
+//		System.out.println("=============코인 추가=======");
+//		Controller.deleteCoin("Bitcoin");
+//		
+//		System.out.println("=========삭제 후 코인 조회======");
+//		Controller.getAllCoins();
+//		
+//		System.out.println("========코인 가격 업데이트 ======");
+//		Controller.changeCoinPrice("Doge", 234656L);
+//		Controller.getAllCoins();
+//		
+//		System.out.println("=========코인  종류 추가 ========");
+//		Controller.addCoin("Amugae", 12346123L, 439816L);
+//		Controller.getAllCoins();
 	}
 }	
