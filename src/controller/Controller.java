@@ -178,7 +178,7 @@ public class Controller {
 			if (CoinDAO.deleteCoin(coinId) == true) {
 				EndView.messageView("해당 코인 삭제 완료");
 			}else {
-				EndView.messageView("코인 삭제 완료");				
+				EndView.messageView("해당 코인은 존재하지 않습니다.");				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
