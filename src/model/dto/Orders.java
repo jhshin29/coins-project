@@ -54,7 +54,7 @@ public class Orders {
 
 	@Override
 	public String toString() {
-		return " 주문 아이디 = " + orderId + " 주문 날짜 = " + orderDate + " 주문 양 = " + orderQty + "총 가격 = " + totalPrice +
-				" 회원 아이디 = " + memberId + " 코인 아이디 " + coinId;
+		return " 주문 ID = " + orderId + " 주문 날짜 = " + orderDate + " 주문 수량 = " + orderQty + "총 가격 = " + totalPrice +
+				" 회원 ID = " + memberId + " 코인 ID " + coinId;
 	}
 }
