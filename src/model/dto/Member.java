@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -12,23 +13,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 public class Member {
 	
 	@Id
 	@Column(name="member_id")
 	private String memberId;
-	
-//	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "order")
-//	@JoinColumn(name = "member_id")
-//	private Collection<Member> member = new ArrayList<>();
 	
 	@Column(name="phone_num")
 	private String phoneNum;
@@ -41,8 +36,14 @@ public class Member {
 	@Column(name="hold_money")
 	private Long holdMoney;
 	
-	@OneToMany(mappedBy="memberId")
+	@OneToMany(mappedBy="memberId", fetch = FetchType.EAGER)
 	List<Orders> orders = new ArrayList<>();
+
+	@Override
+	public String toString() {
+		return "회원 ID : " + memberId + " / 전화번호 : " + phoneNum + " / 이름 : " + realName + " / 우편번호 : " + zipcode +
+				" / 보유하고 있는 머니 : " + holdMoney;
+	}
 	
 }
 

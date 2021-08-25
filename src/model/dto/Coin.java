@@ -8,20 +8,19 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+//@ToString
 @Entity
 public class Coin {
+
 	@Id
 	@Column(name="coin_id")
 	private String coinId;
@@ -34,4 +33,9 @@ public class Coin {
 	
 	@OneToMany(mappedBy="coinId")
 	List<Orders> orders = new ArrayList<>();
+	
+	@Override
+	public String toString() {
+		return "코인 ID : " + coinId + " / 코인 가격 : " + coinPrice + " / 총 수량 : " + totalQty;
+	}
 }
