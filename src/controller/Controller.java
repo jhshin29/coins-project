@@ -240,12 +240,19 @@ public class Controller {
 				addOrder(memberId, coinId, new Orders(orderDate, orderQty));
 
 			} else if (choice == 5) {
+				int orderId = -1;
+				int orderQty = -1;
 				System.out.println("주문 번호를 숫자로 입력해주세요.");
-				int orderId = Integer.parseInt(sc.next());
+				orderId = Integer.parseInt(sc.next());
 				System.out.println("변경할 수량을 숫자로 입력해주세요.");
-				int orderQty = Integer.parseInt(sc.next());
+				try {
+					orderQty = Integer.parseInt(sc.next());
+				} catch (NumberFormatException e) {
+					System.out.println("에러 ㅜㅜ");
+				}
+				
 
-				changeOrderQty(orderId, orderQty);
+				changeOrderQty(orderId, orderQty);					
 
 			} else if (choice == 6) {
 				System.out.println("취소할 주문 번호를 숫자로 입력해주세요.");
@@ -277,7 +284,11 @@ public class Controller {
 
 			} else if (choice == 11) {
 				System.out.println("====== 전체 주문 리스트 ======");
-				getAllOrders();
+				try {
+					getAllOrders();
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
 
 			} else if (choice == 12) {
 				System.out.println("등록할 코인 이름을 입력해주세요.");
