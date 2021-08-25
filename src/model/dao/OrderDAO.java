@@ -5,11 +5,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import lombok.extern.slf4j.Slf4j;
 import model.dto.Coin;
 import model.dto.Member;
 import model.dto.Orders;
 import util.PublicCommon;
 
+@Slf4j
 public class OrderDAO {
 
 	public static Orders getOrder(int orderId) {
@@ -88,7 +90,7 @@ public class OrderDAO {
 			} else {
 				System.out.println("주문 금액이 현재 보유 금액을 초과합니다. 보유 금액을 확인해주세요.");
 			}
-			
+			log.info(memberId+" 님이" + coinId + " 을 구매하셨습니다.");
 			tx.commit();
 			
 		} catch (RuntimeException e) {

@@ -5,10 +5,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import lombok.extern.slf4j.Slf4j;
 import model.dto.Member;
 import util.PublicCommon;
 
+@Slf4j
 public class MemberDAO {
+	
 	
 	//1. 회원가입
 	public static boolean addMember(String memberId, String phoneNum,String realName,String zipcode)  throws Exception{
@@ -27,6 +30,7 @@ public class MemberDAO {
 				newMember.setHoldMoney(0L);
 				
 				em.persist(newMember);
+				log.info(memberId+" 님이 가입하셨습니다.");
 				tx.commit();
 				return true;
 			}
@@ -50,6 +54,7 @@ public class MemberDAO {
 			tx.begin();
 			if(member != null) {
 				member.setHoldMoney(holdMoney);
+				log.info(memberId + "님이 금액을 수정하셨습니다.");
 				tx.commit();
 				return true;
 			}
@@ -103,6 +108,7 @@ public class MemberDAO {
 			if(member != null) {
 				em.remove(member);
 				
+				log.info(memberId +" 님이 탈퇴하셨습니다.");
 				tx.commit();
 				return true;
 			}
