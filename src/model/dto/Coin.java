@@ -34,12 +34,11 @@ public class Coin {
 	@Column(name="total_qty")
 	private Long totalQty;
 	
-	@OneToMany(mappedBy="coinId", cascade=CascadeType.REMOVE)
+	@OneToMany(mappedBy="coinId")
 	List<Orders> orders = new ArrayList<>();
 	
 	@Override
 	public String toString() {
 		return "Coin [coinId=" + coinId + ", coinPrice=" + coinPrice + ", totalQty=" + totalQty + "]";
 	}
-	
 }

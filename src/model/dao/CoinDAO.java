@@ -2,7 +2,6 @@ package model.dao;
 
 import java.util.List;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
@@ -38,31 +37,36 @@ public class CoinDAO {
 	}
 	
 	// 코인 넣기
-	public static void insertCoin(Coin coin) {
+	public static void addCoin(String coinId, Long coinPrice, Long totalQty){
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
+		Coin newCoin = new Coin();
+		
 		try {
 			tx.begin();
-			em.persist(coin);
+			newCoin.setCoinId(coinId);			
+			newCoin.setCoinPrice(coinPrice);
+			newCoin.setTotalQty(totalQty);
+			em.persist(newCoin);
 			tx.commit();
-		}catch (RuntimeException e) {
+		}catch(Exception e) {
 			tx.rollback();
 			e.printStackTrace();
-		} finally {
+		}finally {
 			em.close();
 			em = null;
 		}
 	}
 	
 	// 코인 수정
-	public static void updateCoin(String coinId, Long totalQty) {
+	public static void updateCoin(String coinId, Long coinPrice) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Coin findCoin = null;
 		try {
 			tx.begin();
-			findCoin = em.find(Coin.class, totalQty);
-			findCoin.setTotalQty(totalQty);
+			findCoin = em.find(Coin.class, coinId);
+			findCoin.setCoinPrice(coinPrice);
 			tx.commit();
 		}catch (RuntimeException e) {
 			tx.rollback();
@@ -74,15 +78,13 @@ public class CoinDAO {
 	}
 	
 	// 코인 삭제
-	public static void deleteCoin(String coinId) throws Exception {
+	public static void deleteCoin(String coinId){
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Coin findcoin = null;
+		Coin findcoin = em.find(Coin.class, coinId);
 		try {
 			tx.begin();
-			if (em.contains(coinId)) {
-				findcoin = em.find(Coin.class, coinId);
-			}
+			findcoin = (Coin)em.find(Coin.class, coinId);
 			em.remove(findcoin);
 			tx.commit();
 		}catch (RuntimeException e) {
@@ -94,3 +96,4 @@ public class CoinDAO {
 		}
 	}
 }
+
