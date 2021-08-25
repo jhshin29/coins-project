@@ -42,7 +42,6 @@ public class OrderDAO {
 		try {
 			orders = member.getOrders();
 		} catch (RuntimeException e) {
-			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
@@ -90,9 +89,10 @@ public class OrderDAO {
 			}
 			
 			tx.commit();
-			
+			System.out.println("주문 등록 완료");
 		} catch (RuntimeException e) {
 			tx.rollback();
+			System.out.println("주문 정보를 다시 확인해주세요.");
 			e.printStackTrace();
 		} finally {
 			em.close();
