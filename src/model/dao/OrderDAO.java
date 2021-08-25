@@ -81,10 +81,14 @@ public class OrderDAO {
 			newOrder.setTotalPrice(coin.getCoinPrice() * order.getOrderQty());
 			
 			if ((member.getHoldMoney() - newOrder.getTotalPrice()) >= 0) {
-				em.persist(newOrder);
-				member.setHoldMoney(member.getHoldMoney() - newOrder.getTotalPrice());
-				coin.setTotalQty(coin.getTotalQty()-order.getOrderQty());
-				System.out.println("주문 등록 완료");
+				if((coin.getTotalQty()-order.getOrderQty()) >= 0) {
+					em.persist(newOrder);
+					member.setHoldMoney(member.getHoldMoney() - newOrder.getTotalPrice());
+					coin.setTotalQty(coin.getTotalQty()-order.getOrderQty());
+					System.out.println("주문 등록 완료");
+				} else {
+					System.out.println("주문 수량이 전체 코인 갯수보다 많습니다. 수량을 줄여주세요.");
+				}
 			} else {
 				System.out.println("주문 금액이 현재 보유 금액을 초과합니다. 보유 금액을 확인해주세요.");
 			}
@@ -117,11 +121,15 @@ public class OrderDAO {
 			findOrder.setTotalPrice(findOrder.getOrderQty() * findOrder.getCoinId().getCoinPrice());
 			
 			if ((member.getHoldMoney() - findOrder.getTotalPrice()) >= 0) {
-				member.setHoldMoney(member.getHoldMoney() - findOrder.getTotalPrice());
-				coin.setTotalQty(coin.getTotalQty() - findOrder.getOrderQty());
-				System.out.println("주문 등록 완료");
-				
-				tx.commit();
+				if((coin.getTotalQty() - findOrder.getOrderQty()) >= 0) {
+					member.setHoldMoney(member.getHoldMoney() - findOrder.getTotalPrice());
+					coin.setTotalQty(coin.getTotalQty() - findOrder.getOrderQty());
+					System.out.println("주문 등록 완료");
+					
+					tx.commit();
+				} else {
+					System.out.println("주문 수량이 전체 코인 갯수보다 많습니다. 수량을 줄여주세요.");
+				}
 			} else {
 				System.out.println("변경된 주문 금액이 현재 보유 금액을 초과합니다. 보유 금액을 확인해주세요.");
 			}
