@@ -2,7 +2,6 @@ package model.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -54,8 +52,7 @@ public class Orders {
 
 	@Override
 	public String toString() {
-		return "Orders [orderId=" + orderId + ", orderDate=" + orderDate + ", orderQty=" + orderQty + ", totalPrice="
-				+ totalPrice + ", memberId=" + memberId.getMemberId() + ", coinId=" + coinId.getCoinId() + "]";
+		return " 주문 ID : " + orderId + " / 주문 날짜 : " + orderDate + " / 주문 수량 : " + orderQty + " / 총 가격 : " + totalPrice +
+				" / 회원 ID : " + memberId.getMemberId() + " / 코인 ID : " + coinId.getCoinId();
 	}
-
 }
