@@ -257,13 +257,28 @@ public class Controller {
 				getAllOrders();
 
 			} else if (choice == 12) {
-				System.out.println("****** 서비스 준비중 입니다. ******");
+				System.out.println("등록할 코인 이름을 입력해주세요.");
+				String coinId = sc.next();
+				System.out.println("코인 가격을 입력해주세요.");
+				Long coinPrice = Long.parseLong(sc.next());
+				System.out.println("코인 총 수량을 입력해주세요.");
+				Long totalQty = Long.parseLong(sc.next());
+	
+				addCoin(coinId, coinPrice, totalQty);
 
 			} else if (choice == 13) {
-				System.out.println("****** 서비스 준비중 입니다. ******");
+				System.out.println("수량 수정할 코인 이름을 입력해주세요.");
+				String coinId = sc.next();
+				System.out.println("변경하실 총 수량을 숫자로 입력해주세요.");
+				Long coinPrice = Long.parseLong(sc.next());
 
+				changeCoinPrice(coinId, coinPrice);
+				
 			} else if (choice == 14) {
-				System.out.println("****** 서비스 준비중 입니다. ******");
+				System.out.println("삭제할 코인 이름을 입력해주세요.");
+				String coinId = sc.next();
+				
+				deleteCoin(coinId);
 
 			}
 		}
