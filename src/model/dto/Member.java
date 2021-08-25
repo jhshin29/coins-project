@@ -3,7 +3,6 @@ package model.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,8 +41,8 @@ public class Member {
 
 	@Override
 	public String toString() {
-		return "memberId:" + memberId + " 님의 정보입니다. [phoneNum =" + phoneNum + ", realName=" + realName + ", zipcode="
-				+ zipcode + ", holdMoney=" + holdMoney + "]";
+		return "회원 ID : " + memberId + " / 전화번호 : " + phoneNum + " / 이름 : " + realName + " / 우편번호 : " + zipcode +
+				" / 보유하고 있는 머니 : " + holdMoney;
 	}
 	
 }
