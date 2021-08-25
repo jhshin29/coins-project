@@ -33,6 +33,23 @@ public class OrderDAO {
 
 		return order;
 	}
+	
+	public static List<Orders> getIdOrders(String memberId) {
+		EntityManager em = PublicCommon.getEntityManager();
+		List<Orders> orders = null;
+		Member member = em.find(Member.class, memberId);
+		
+		try {
+			orders = member.getOrders();
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+			em = null;
+		}
+		
+		return orders;
+	}
 
 	public static List<Orders> getAllOrders() {
 		EntityManager em = PublicCommon.getEntityManager();
@@ -67,6 +84,7 @@ public class OrderDAO {
 			if ((member.getHoldMoney() - newOrder.getTotalPrice()) >= 0) {
 				em.persist(newOrder);
 				member.setHoldMoney(member.getHoldMoney() - newOrder.getTotalPrice());
+				coin.setTotalQty(coin.getTotalQty()-order.getOrderQty());
 			} else {
 				System.out.println("주문 금액이 현재 보유 금액을 초과합니다. 보유 금액을 확인해주세요.");
 			}
@@ -87,16 +105,19 @@ public class OrderDAO {
 		EntityTransaction tx = em.getTransaction();
 		Orders findOrder = em.find(Orders.class, orderId);
 		Member member = findOrder.getMemberId();
+		Coin coin = findOrder.getCoinId();
 
 		try {
 			tx.begin();
 
-			findOrder.setOrderQty(orderQty);
 			member.setHoldMoney(member.getHoldMoney() + findOrder.getTotalPrice());
+			coin.setTotalQty(coin.getTotalQty() + findOrder.getOrderQty());
+			findOrder.setOrderQty(orderQty);
 			findOrder.setTotalPrice(findOrder.getOrderQty() * findOrder.getCoinId().getCoinPrice());
 			
 			if ((member.getHoldMoney() - findOrder.getTotalPrice()) >= 0) {
 				member.setHoldMoney(member.getHoldMoney() - findOrder.getTotalPrice());
+				coin.setTotalQty(coin.getTotalQty() - findOrder.getOrderQty());
 				
 				tx.commit();
 			} else {
@@ -117,11 +138,14 @@ public class OrderDAO {
 		EntityTransaction tx = em.getTransaction();
 		Orders findOrder = em.find(Orders.class, orderId);
 		Member member = findOrder.getMemberId();
+		Coin coin = findOrder.getCoinId();
 		
 		try {
 			tx.begin();
 
 			member.setHoldMoney(member.getHoldMoney() + findOrder.getTotalPrice());
+			coin.setTotalQty(coin.getTotalQty() + findOrder.getOrderQty());
+			
 			em.remove(findOrder);
 
 			tx.commit();
@@ -134,5 +158,6 @@ public class OrderDAO {
 			em = null;
 		}
 	}
+
 
 }

@@ -16,6 +16,10 @@ public class Controller {
 		EndView.getOrderView(OrderDAO.getOrder(orderId));
 	}
 
+	public static void getIdOrders(String memberId) {
+		EndView.getAllOrderView(OrderDAO.getIdOrders(memberId));
+	}
+
 	// 2. 전체 주문 리스트 조회
 	public static void getAllOrders() {
 		EndView.getAllOrderView(OrderDAO.getAllOrders());
@@ -158,7 +162,7 @@ public class Controller {
 	}
 
 	// ---------------------------------------------------------------------------
-	
+
 	// 콘솔 메뉴 선택
 	public static void getInputConsole() {
 		System.out.println("***** 안녕하세요! 플레이코인입니다. *****");
@@ -166,10 +170,17 @@ public class Controller {
 		Scanner sc = new Scanner(new InputStreamReader(System.in));
 
 		while (true) {
-			System.out.println("\n1. 회원가입	2. 보유 금액 변경		3. 전체 코인 리스트\r\n"
-					+ "4. 코인 주문	5. 주문 수량 변경		6. 주문 취소\r\n" + "7. 나의 주문 조회\r\n" + "\r\n" + "------ 관리자 -------\r\n"
-					+ "8. 회원 전체 조회	9. 회원 ID 조회		10. 회원 삭제\r\n" + "11. 전체 주문 조회	12. 코인 추가		13. 코인 전체 수량 수정\r\n"
-					+ "14. 코인 삭제");
+			System.out.println("\n0. 프로그램 종료\r\n" + 
+					"\r\n" + 
+					"------ 사용자 -------\r\n" + 
+					"\r\n" + 
+					"1. 회원가입	2. 보유 금액 변경		3. 전체 코인 리스트\r\n" + 
+					"4. 코인 주문	5. 주문 수량 변경		6. 주문 취소\r\n" + 
+					"7. 나의 주문 조회	8. 회원 ID 조회		9. 회원 탈퇴\r\n" + 
+					"\r\n" + 
+					"------ 관리자 -------\r\n" + 
+					"10. 전체 회원 조회	11. 전체 주문 조회		12. 코인 추가\r\n" + 
+					"13. 코인 수량 수정	14. 코인 삭제");
 			System.out.println("메뉴를 선택해주세요.");
 
 			try {
@@ -203,13 +214,14 @@ public class Controller {
 				getMember(memberId);
 
 			} else if (choice == 3) {
-				System.out.println("****** 서비스 준비중 입니다. ******");
-				System.out.println("플레이코인 거래 가능 코인 리스트 ");
+				System.out.println("====== 플레이코인 거래 가능 코인 리스트 ======");
+				getAllCoins();
 
 			} else if (choice == 4) {
 				System.out.println("회원 ID를 입력해주세요.");
 				String memberId = sc.next();
 				System.out.println("주문하실 코인이름을 입력해주세요. ex) Bitcoin, Ripple, ...");
+				getAllCoins();
 				String coinId = sc.next();
 				System.out.println("주문 날짜를 입력해주세요. ex) 2021-08-25");
 				String orderDate = sc.next();
@@ -233,24 +245,26 @@ public class Controller {
 				deleteOrder(orderId);
 
 			} else if (choice == 7) {
-				System.out.println("****** 서비스 준비중 입니다. ******");
 				System.out.println("회원 ID를 입력해주세요.");
+				String memberId = sc.next();
+
+				getIdOrders(memberId);
 
 			} else if (choice == 8) {
-				System.out.println("====== 전체 회원 리스트 ======");
-				getAllMembers();
-
-			} else if (choice == 9) {
 				System.out.println("조회할 회원 ID를 입력해주세요.");
 				String memberId = sc.next();
 
 				getMember(memberId);
 
-			} else if (choice == 10) {
+			} else if (choice == 9) {
 				System.out.println("삭제할 회원 ID를 입력해주세요.");
 				String memberId = sc.next();
 
 				deleteMember(memberId);
+
+			} else if (choice == 10) {
+				System.out.println("====== 전체 회원 리스트 ======");
+				getAllMembers();
 
 			} else if (choice == 11) {
 				System.out.println("====== 전체 주문 리스트 ======");
@@ -263,21 +277,21 @@ public class Controller {
 				Long coinPrice = Long.parseLong(sc.next());
 				System.out.println("코인 총 수량을 입력해주세요.");
 				Long totalQty = Long.parseLong(sc.next());
-	
+
 				addCoin(coinId, coinPrice, totalQty);
 
 			} else if (choice == 13) {
-				System.out.println("수량 수정할 코인 이름을 입력해주세요.");
+				System.out.println("가격을 수정할 코인 이름을 입력해주세요.");
 				String coinId = sc.next();
-				System.out.println("변경하실 총 수량을 숫자로 입력해주세요.");
+				System.out.println("변경 가격을 숫자로 입력해주세요.");
 				Long coinPrice = Long.parseLong(sc.next());
 
 				changeCoinPrice(coinId, coinPrice);
-				
+
 			} else if (choice == 14) {
 				System.out.println("삭제할 코인 이름을 입력해주세요.");
 				String coinId = sc.next();
-				
+
 				deleteCoin(coinId);
 
 			}
