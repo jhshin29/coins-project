@@ -14,11 +14,12 @@ public class MemberDAO {
 	public static boolean addMember(String memberId, String phoneNum,String realName,String zipcode)  throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Member newMember = em.find(Member.class, memberId);
+		Member member = em.find(Member.class, memberId);
 		
 		try {
 			tx.begin();
-			if(newMember == null) {
+			if(member == null) {
+				Member newMember = new Member();
 				newMember.setMemberId(memberId);
 				newMember.setPhoneNum(phoneNum);
 				newMember.setRealName(realName);
@@ -101,6 +102,7 @@ public class MemberDAO {
 			tx.begin();
 			if(member != null) {
 				em.remove(member);
+				
 				tx.commit();
 				return true;
 			}
