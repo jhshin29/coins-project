@@ -140,7 +140,7 @@ public class Controller {
 	public static void getAllCoins() {
 		try {
 			EndView.getAllCoinView(CoinDAO.getAllCoins());			
-		}catch(Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -152,9 +152,9 @@ public class Controller {
 				EndView.messageView("코인 가격 변경 조회를 합니다.");
 				getOneCoin(coinId);}
 			else {
-				EndView.messageView("일치하는 코인 아디가 존재하지 않습니다.");
+				EndView.messageView("일치하는 코인 아이디가 존재하지 않습니다.");
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			EndView.messageView("코인 삭제에 실패하였습니다.");
 		}

@@ -5,9 +5,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import lombok.extern.slf4j.Slf4j;
 import model.dto.Coin;
 import util.PublicCommon;
 
+@Slf4j
 public class CoinDAO {
 	
 	// 코인 아이디로 단일 조회
@@ -51,8 +53,8 @@ public class CoinDAO {
 				newCoin.setCoinId(coinId);			
 				newCoin.setCoinPrice(coinPrice);
 				newCoin.setTotalQty(totalQty);
-			
 				em.persist(newCoin);
+				log.info(coinId+ " 이 추가되었습니다.");
 				tx.commit();
 				return true;
 			}
@@ -75,9 +77,10 @@ public class CoinDAO {
 		try {
 			tx.begin();
 			if (findCoin != null) {
-				findCoin.setCoinPrice(coinPrice);}
+				findCoin.setCoinPrice(coinPrice);
 				tx.commit();
 				return true;
+			}
 		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -98,6 +101,7 @@ public class CoinDAO {
 			tx.begin();
 			if (findcoin != null) {
 				em.remove(findcoin);
+				log.info(coinId+ " 이 삭제되었습니다.");
 				tx.commit();
 				return true;
 			}

@@ -54,7 +54,7 @@ public class MemberDAO {
 			tx.begin();
 			if (member != null) {
 				member.setHoldMoney(holdMoney);
-				log.info(memberId + "님이 금액을 수정하셨습니다.");
+				log.info(memberId + "님이 금액을 " + holdMoney+" 로 수정하셨습니다.");
 				tx.commit();
 				return true;
 			}
