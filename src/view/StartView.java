@@ -22,6 +22,23 @@ public class StartView {
 		System.out.println("======== 주문 삭제 ==========");
 		Controller.deleteOrder(22);
 		Controller.getAllOrders();
-	}
 	
-}
+		
+//--------------------------------------------------------------------------------------		
+		
+//		System.out.println("***** 1. 회원가입  *****");
+//		Controller.addMember("seeun999", "010-1244-5644", "세은", "19jh8");
+//
+//		System.out.println("***** 2. 회원 정보 수정 - 보유금액 수정  *****");
+//		Controller.updateHoldMoney("sjh0326", 1214114L); //널포인터 예외처리
+//		
+//		System.out.println("***** 3. 회원 정보 전체 검색  *****");
+//		Controller.getAllMembers();
+//		
+//		System.out.println("***** 4. 회원 아이디로 검색  *****");
+//		Controller.getMember("sjh0326");
+//		
+//		System.out.println("***** 5. 회원 삭제  *****");
+//		Controller.deleteMember("pse1120");
+	}
+}	
