@@ -22,6 +22,7 @@ public class OrderDAO {
 			tx.begin();
 			order = em.find(Orders.class, orderId);
 			tx.commit();
+			
 		} catch (RuntimeException e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -63,11 +64,15 @@ public class OrderDAO {
 			newOrder.setCoinId(coin);
 			newOrder.setTotalPrice(coin.getCoinPrice() * order.getOrderQty());
 			
-			em.persist(newOrder);
+			if ((member.getHoldMoney() - newOrder.getTotalPrice()) >= 0) {
+				em.persist(newOrder);
+				member.setHoldMoney(member.getHoldMoney() - newOrder.getTotalPrice());
+			} else {
+				System.out.println("주문 금액이 현재 보유 금액을 초과합니다. 보유 금액을 확인해주세요.");
+			}
 			
-			member.setHoldMoney(member.getHoldMoney()-newOrder.getTotalPrice());
-
 			tx.commit();
+			
 		} catch (RuntimeException e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -87,11 +92,17 @@ public class OrderDAO {
 			tx.begin();
 
 			findOrder.setOrderQty(orderQty);
-			member.setHoldMoney(member.getHoldMoney()+findOrder.getTotalPrice());
-			findOrder.setTotalPrice(findOrder.getOrderQty()*findOrder.getCoinId().getCoinPrice());
-			member.setHoldMoney(member.getHoldMoney()-findOrder.getTotalPrice());
+			member.setHoldMoney(member.getHoldMoney() + findOrder.getTotalPrice());
+			findOrder.setTotalPrice(findOrder.getOrderQty() * findOrder.getCoinId().getCoinPrice());
 			
-			tx.commit();
+			if ((member.getHoldMoney() - findOrder.getTotalPrice()) >= 0) {
+				member.setHoldMoney(member.getHoldMoney() - findOrder.getTotalPrice());
+				
+				tx.commit();
+			} else {
+				System.out.println("변경된 주문 금액이 현재 보유 금액을 초과합니다. 보유 금액을 확인해주세요.");
+			}
+			
 		} catch (RuntimeException e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -101,16 +112,20 @@ public class OrderDAO {
 		}
 	}
 
-	public static void deleteOrder(int orderId){
+	public static void deleteOrder(int orderId) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Orders findOrder = em.find(Orders.class, orderId);
+		Member member = findOrder.getMemberId();
+		
 		try {
 			tx.begin();
 
+			member.setHoldMoney(member.getHoldMoney() + findOrder.getTotalPrice());
 			em.remove(findOrder);
 
 			tx.commit();
+			
 		} catch (RuntimeException e) {
 			tx.rollback();
 			e.printStackTrace();
