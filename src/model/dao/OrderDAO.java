@@ -39,7 +39,7 @@ public class OrderDAO {
 		List<Orders> orders = null;
 
 		try {
-			orders = em.createQuery("SELECT E FROM Orders E").getResultList();
+			orders = em.createQuery("SELECT E FROM Orders E ORDER BY E.orderId").getResultList();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		} finally {
