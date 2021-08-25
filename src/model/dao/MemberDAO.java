@@ -11,51 +11,55 @@ import util.PublicCommon;
 public class MemberDAO {
 	
 	//1. 회원가입
-	public static void addMember(String memberId, String phoneNum,String realName,String zipcode)  throws NullPointerException{
+	public static boolean addMember(String memberId, String phoneNum,String realName,String zipcode)  throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Member newMember = new Member();
+		Member newMember = em.find(Member.class, memberId);
 		
 		try {
 			tx.begin();
-		
-			newMember.setMemberId(memberId);
-			newMember.setPhoneNum(phoneNum);
-			newMember.setRealName(realName);
-			newMember.setZipcode(zipcode);
-			newMember.setHoldMoney(0L);
-			
-			em.persist(newMember);
-		
-			tx.commit();
-		}catch (Exception e) {
+			if(newMember == null) {
+				newMember.setMemberId(memberId);
+				newMember.setPhoneNum(phoneNum);
+				newMember.setRealName(realName);
+				newMember.setZipcode(zipcode);
+				newMember.setHoldMoney(0L);
+				
+				em.persist(newMember);
+				tx.commit();
+				return true;
+			}
+		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
 		}
+		return false;
 	}
 	
-	//2. 회원정보수정 - 보유금액수정(입금)
-	public static void updateHoldMoney(String memberId, Long holdMoney) {
+	//2. 회원정보수정 - 보유금액수정(입출금)
+	public static boolean updateHoldMoney(String memberId, Long holdMoney) throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Member member = em.find(Member.class, memberId);
 		
 		try {
 			tx.begin();
-
-			member.setHoldMoney(holdMoney);
-			
-			tx.commit();
-		}catch (Exception e) {
+			if(member != null) {
+				member.setHoldMoney(holdMoney);
+				tx.commit();
+				return true;
+			}
+		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
 		}
+		return false;
 	}
 	
 	//3. 회원 전체 조회
@@ -88,24 +92,25 @@ public class MemberDAO {
 	}
 	
 	//5. 회원 삭제
-	public static void deleteMember(String memberId) throws Exception {
+	public static boolean deleteMember(String memberId) throws Exception {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Member member = em.find(Member.class, memberId);
 		
 		try {
 			tx.begin();
-			
-			em.remove(member);
-			
-			tx.commit();
+			if(member != null) {
+				em.remove(member);
+				tx.commit();
+				return true;
+			}
 		} catch (Exception e) {
 		    tx.rollback();
 		    e.printStackTrace();
 	    } finally {
 	    	em.close();
 	    	em = null;
-
 		}
+		return false;
 	}
 }

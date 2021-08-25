@@ -63,21 +63,26 @@ public class Controller {
 	// 1. 회원가입
 	public static void addMember(String memberId, String phoneNum, String realName, String zipcode) {
 		try {
-			MemberDAO.addMember(memberId, phoneNum, realName, zipcode);
-			EndView.messageView("회원가입 완료");
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			EndView.messageView("회원가입에 실패하였습니다.");
+			if(MemberDAO.addMember(memberId, phoneNum, realName, zipcode) == true)
+				EndView.messageView("회원가입 완료");
+			else
+				EndView.messageView("존재하는 아이디입니다.");
+		} catch (Exception e) {
+				e.printStackTrace();
+				EndView.messageView("회원가입에 실패하였습니다.");
 		}
-
 	}
 
 	// 2. 회원정보수정 - 보유금액수정(입금)
 	public static void updateHoldMoney(String memberId, Long holdMoney) {
 		try {
-			MemberDAO.updateHoldMoney(memberId, holdMoney);
-			EndView.messageView("보유금액 변경 완료");
-		} catch (NullPointerException e) {
+			if(MemberDAO.updateHoldMoney(memberId, holdMoney) == true) {
+				EndView.messageView("보유금액 변경 완료");
+				getMember(memberId);
+			}
+			else
+				EndView.messageView("일치하는 회원아이디가 없습니다.");
+		} catch (Exception e) {
 			e.printStackTrace();
 			EndView.messageView("금액 변경에 실패하였습니다.");
 		}
@@ -101,14 +106,16 @@ public class Controller {
 		}
 	}
 
-	// 5. 회원 삭제
+	//5. 회원 삭제 
 	public static void deleteMember(String memberId) {
 		try {
-			MemberDAO.deleteMember(memberId);
-			EndView.messageView("회원 삭제 완료");
+			if (MemberDAO.deleteMember(memberId)==true)
+				EndView.messageView("회원 삭제 완료");
+			else
+				EndView.messageView("일치하는 회원아이디가 없습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			EndView.messageView("회원아이디가 존재하지 않습니다. 다시 확인해주세요.");
+			EndView.messageView("회원삭제에 실패하였습니다.");
 		}
 	}
 
@@ -205,13 +212,15 @@ public class Controller {
 				addMember(memberId, phoneNum, realName, zipcode);
 
 			} else if (choice == 2) {
-				System.out.println("회원 ID를 입력해주세요.");
-				String memberId = sc.next();
-				System.out.println("변경하실 보유 금액을 입력해주세요.");
-				Long holdMoney = Long.parseLong(sc.next());
-
-				updateHoldMoney(memberId, holdMoney);
-				getMember(memberId);
+				try {
+					System.out.println("회원 ID를 입력해주세요.");
+					String memberId = sc.next();
+					System.out.println("변경하실 보유 금액을 입력해주세요.");
+					Long holdMoney = Long.parseLong(sc.next());
+					updateHoldMoney(memberId, holdMoney);
+				} catch (NumberFormatException e) {
+					System.out.println("잘못입력하셨습니다. 금액을 숫자로 입력해주세요");
+				}
 
 			} else if (choice == 3) {
 				System.out.println("====== 플레이코인 거래 가능 코인 리스트 ======");
