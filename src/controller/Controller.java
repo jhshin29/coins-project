@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.InputStreamReader;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 import model.dao.CoinDAO;

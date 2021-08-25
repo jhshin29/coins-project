@@ -3,18 +3,15 @@ package model.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,6 +36,6 @@ public class Coin {
 	
 	@Override
 	public String toString() {
-		return "코인 아이디 = " + coinId + " 코인 가격 = " + coinPrice + " 총 양 = " + totalQty;
+		return "코인 ID : " + coinId + " / 코인 가격 : " + coinPrice + " / 총 수량 : " + totalQty;
 	}
 }
