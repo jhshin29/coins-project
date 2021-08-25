@@ -84,12 +84,13 @@ public class OrderDAO {
 				em.persist(newOrder);
 				member.setHoldMoney(member.getHoldMoney() - newOrder.getTotalPrice());
 				coin.setTotalQty(coin.getTotalQty()-order.getOrderQty());
+				System.out.println("주문 등록 완료");
 			} else {
 				System.out.println("주문 금액이 현재 보유 금액을 초과합니다. 보유 금액을 확인해주세요.");
 			}
 			
 			tx.commit();
-			System.out.println("주문 등록 완료");
+			
 		} catch (RuntimeException e) {
 			tx.rollback();
 			System.out.println("주문 정보를 다시 확인해주세요.");
@@ -118,6 +119,7 @@ public class OrderDAO {
 			if ((member.getHoldMoney() - findOrder.getTotalPrice()) >= 0) {
 				member.setHoldMoney(member.getHoldMoney() - findOrder.getTotalPrice());
 				coin.setTotalQty(coin.getTotalQty() - findOrder.getOrderQty());
+				System.out.println("주문 등록 완료");
 				
 				tx.commit();
 			} else {
@@ -158,6 +160,5 @@ public class OrderDAO {
 			em = null;
 		}
 	}
-
 
 }
