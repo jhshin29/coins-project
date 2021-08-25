@@ -24,7 +24,7 @@ public class CoinDAO {
 	}
 	
 	// 코인 전체 조회
-	public static List<Coin> getAllCoins() {
+	public static List<Coin> getAllCoins() throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Coin> coins = null;
 		try {
@@ -37,18 +37,22 @@ public class CoinDAO {
 	}
 	
 	// 코인 넣기
-	public static void addCoin(String coinId, Long coinPrice, Long totalQty){
+	public static boolean addCoin(String coinId, Long coinPrice, Long totalQty) throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Coin newCoin = new Coin();
-		
+		Coin coin = em.find(Coin.class, coinId);
 		try {
 			tx.begin();
-			newCoin.setCoinId(coinId);			
-			newCoin.setCoinPrice(coinPrice);
-			newCoin.setTotalQty(totalQty);
-			em.persist(newCoin);
-			tx.commit();
+			if (coin == null) {
+				Coin newCoin = new Coin();
+				newCoin.setCoinId(coinId);			
+				newCoin.setCoinPrice(coinPrice);
+				newCoin.setTotalQty(totalQty);
+			
+				em.persist(newCoin);
+				tx.commit();
+				return true;
+			}
 		}catch(Exception e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -56,44 +60,51 @@ public class CoinDAO {
 			em.close();
 			em = null;
 		}
+		return false;
 	}
 	
 	// 코인 수정
-	public static void updateCoin(String coinId, Long coinPrice) {
+	public static boolean updateCoin(String coinId, Long coinPrice) throws Exception {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Coin findCoin = null;
+		Coin findCoin = em.find(Coin.class, coinId);
+		
 		try {
 			tx.begin();
-			findCoin = em.find(Coin.class, coinId);
-			findCoin.setCoinPrice(coinPrice);
-			tx.commit();
-		}catch (RuntimeException e) {
+			if (findCoin != null) {
+				findCoin.setCoinPrice(coinPrice);}
+				tx.commit();
+				return true;
+		}catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
 		}
+		return false;
 	}
 	
 	// 코인 삭제
-	public static void deleteCoin(String coinId){
+	public static boolean deleteCoin(String coinId) throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Coin findcoin = em.find(Coin.class, coinId);
 		try {
 			tx.begin();
-			findcoin = (Coin)em.find(Coin.class, coinId);
-			em.remove(findcoin);
-			tx.commit();
-		}catch (RuntimeException e) {
+			if (findcoin != null) {
+				em.remove(findcoin);
+				tx.commit();
+				return true;
+			}
+		}catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			em.close();
 			em = null;
 		}
+		return false;
 	}
 }
 
