@@ -39,6 +39,6 @@ public class Coin {
 	
 	@Override
 	public String toString() {
-		return "Coin [coinId=" + coinId + ", coinPrice=" + coinPrice + ", totalQty=" + totalQty + "]";
+		return "코인 아이디 = " + coinId + " 코인 가격 = " + coinPrice + " 총 양 = " + totalQty;
 	}
 }
