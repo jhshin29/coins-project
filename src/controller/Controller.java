@@ -152,7 +152,7 @@ public class Controller {
 				EndView.messageView("코인 가격 변경 조회를 합니다.");
 				getOneCoin(coinId);}
 			else {
-				EndView.messageView("일치하는 코인 아디가 존재하지 않습니다.");
+				EndView.messageView("일치하는 코인 아이디가 존재하지 않습니다.");
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -178,7 +178,7 @@ public class Controller {
 			if (CoinDAO.deleteCoin(coinId) == true) {
 				EndView.messageView("해당 코인 삭제 완료");
 			}else {
-				EndView.messageView("코인 삭제 완료");				
+				EndView.messageView("해당 코인은 존재하지 않습니다.");				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
