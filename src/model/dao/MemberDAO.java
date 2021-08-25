@@ -11,13 +11,21 @@ import util.PublicCommon;
 public class MemberDAO {
 	
 	//1. 회원가입
-	public static void addMember(Member member) {
+	public static void addMember(String memberId, String phoneNum,String realName,String zipcode)  throws NullPointerException{
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
+		Member newMember = new Member();
+		
 		try {
 			tx.begin();
 		
-			em.persist(member);
+			newMember.setMemberId(memberId);
+			newMember.setPhoneNum(phoneNum);
+			newMember.setRealName(realName);
+			newMember.setZipcode(zipcode);
+			newMember.setHoldMoney(0L);
+			
+			em.persist(newMember);
 		
 			tx.commit();
 		}catch (Exception e) {
@@ -29,16 +37,17 @@ public class MemberDAO {
 		}
 	}
 	
-	//2.  회원정보수정
-	public static void updateMember(String memberId, Long holdMoney) {
+	//2. 회원정보수정 - 보유금액수정(입금)
+	public static void updateHoldMoney(String memberId, Long holdMoney) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Member member = null;
+		Member member = em.find(Member.class, memberId);
 		
 		try {
 			tx.begin();
-			member = em.find(Member.class, memberId);
+
 			member.setHoldMoney(holdMoney);
+			
 			tx.commit();
 		}catch (Exception e) {
 			tx.rollback();
@@ -82,16 +91,13 @@ public class MemberDAO {
 	public static void deleteMember(String memberId) throws Exception {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Member member = null;
-		
-		tx.begin();
+		Member member = em.find(Member.class, memberId);
 		
 		try {
-			if(em.contains(memberId)) 
-				member = (Member)em.find(Member.class, memberId);
-
-			System.out.println(member);
+			tx.begin();
+			
 			em.remove(member);
+			
 			tx.commit();
 		} catch (Exception e) {
 		    tx.rollback();
