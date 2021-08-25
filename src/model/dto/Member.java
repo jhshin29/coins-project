@@ -37,7 +37,7 @@ public class Member {
 	@Column(name="hold_money")
 	private Long holdMoney;
 	
-	@OneToMany(mappedBy="memberId", cascade=CascadeType.REMOVE)
+	@OneToMany(mappedBy="memberId")
 	List<Orders> orders = new ArrayList<>();
 
 	@Override
