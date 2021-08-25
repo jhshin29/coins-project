@@ -56,7 +56,6 @@ public class EndView {
 		}
 	}
 	
-	// 예외가 아닌 단순 메세지 출력
 	public static void messageView(String message) {
 		System.out.println(message);
 	}

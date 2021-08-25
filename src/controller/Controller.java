@@ -45,6 +45,7 @@ public class Controller {
 	public static void changeOrderQty(int orderId, int orderQty) {
 		try {
 			OrderDAO.updateOrder(orderId, orderQty);
+			EndView.messageView("수량 변경 완료");
 			EndView.getOrderView(OrderDAO.getOrder(orderId));
 		} catch (NullPointerException e) {
 			e.printStackTrace();

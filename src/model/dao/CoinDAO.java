@@ -14,6 +14,7 @@ public class CoinDAO {
 	public static Coin getCoin(String coinId) throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		Coin coin = null;
+		
 		try {
 			coin = em.find(Coin.class, coinId);
 		} finally {
@@ -27,6 +28,7 @@ public class CoinDAO {
 	public static List<Coin> getAllCoins() throws Exception{
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Coin> coins = null;
+		
 		try {
 			coins = em.createQuery("SELECT E FROM Coin E", Coin.class).getResultList();
 		} finally {
@@ -41,6 +43,7 @@ public class CoinDAO {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Coin coin = em.find(Coin.class, coinId);
+		
 		try {
 			tx.begin();
 			if (coin == null) {
@@ -53,10 +56,10 @@ public class CoinDAO {
 				tx.commit();
 				return true;
 			}
-		}catch(Exception e) {
+		} catch(Exception e) {
 			tx.rollback();
 			e.printStackTrace();
-		}finally {
+		} finally {
 			em.close();
 			em = null;
 		}
@@ -75,7 +78,7 @@ public class CoinDAO {
 				findCoin.setCoinPrice(coinPrice);}
 				tx.commit();
 				return true;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
@@ -90,6 +93,7 @@ public class CoinDAO {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Coin findcoin = em.find(Coin.class, coinId);
+		
 		try {
 			tx.begin();
 			if (findcoin != null) {
@@ -97,7 +101,7 @@ public class CoinDAO {
 				tx.commit();
 				return true;
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {

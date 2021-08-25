@@ -21,7 +21,7 @@ public class MemberDAO {
 		
 		try {
 			tx.begin();
-			if(member == null) {
+			if (member == null) {
 				Member newMember = new Member();
 				newMember.setMemberId(memberId);
 				newMember.setPhoneNum(phoneNum);
@@ -52,7 +52,7 @@ public class MemberDAO {
 		
 		try {
 			tx.begin();
-			if(member != null) {
+			if (member != null) {
 				member.setHoldMoney(holdMoney);
 				log.info(memberId + "님이 금액을 수정하셨습니다.");
 				tx.commit();
@@ -105,7 +105,7 @@ public class MemberDAO {
 		
 		try {
 			tx.begin();
-			if(member != null) {
+			if (member != null) {
 				em.remove(member);
 				
 				log.info(memberId +" 님이 탈퇴하셨습니다.");
