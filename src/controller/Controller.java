@@ -1,10 +1,8 @@
 package controller;
 
-import java.util.List;
-
+import model.dao.CoinDAO;
 import model.dao.MemberDAO;
 import model.dao.OrderDAO;
-import model.dto.Member;
 import model.dto.Orders;
 import view.EndView;
 

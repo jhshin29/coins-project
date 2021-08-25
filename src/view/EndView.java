@@ -2,6 +2,7 @@ package view;
 
 import java.util.List;
 
+import model.dto.Coin;
 import model.dto.Member;
 import model.dto.Orders;
 
