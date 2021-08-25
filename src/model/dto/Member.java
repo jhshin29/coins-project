@@ -43,8 +43,8 @@ public class Member {
 
 	@Override
 	public String toString() {
-		return "memberId:" + memberId + " 님의 정보입니다. [phoneNum =" + phoneNum + ", realName=" + realName + ", zipcode="
-				+ zipcode + ", holdMoney=" + holdMoney + "]";
+		return "회원 아이디 = " + memberId + " 회원 전화번호 = " + phoneNum + " 회원 이름 = " + realName + " 우편번호 = " + zipcode +
+				" 보유하고 있는 머니 = " + holdMoney;
 	}
 	
 }
