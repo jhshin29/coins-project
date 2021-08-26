@@ -150,8 +150,8 @@ public class Controller {
 		try {
 			if (CoinDAO.updateCoin(coinId, coinPrice) == true) {
 				EndView.messageView("코인 가격 변경 조회를 합니다.");
-				getOneCoin(coinId);}
-			else {
+				getOneCoin(coinId);
+			} else {
 				EndView.messageView("일치하는 코인 아이디가 존재하지 않습니다.");
 			}
 		} catch (Exception e) {
@@ -177,7 +177,7 @@ public class Controller {
 		try {
 			if (CoinDAO.deleteCoin(coinId) == true) {
 				EndView.messageView("해당 코인 삭제 완료");
-			}else {
+			} else {
 				EndView.messageView("해당 코인은 존재하지 않습니다.");				
 			}
 		} catch (Exception e) {
@@ -322,13 +322,17 @@ public class Controller {
 				addCoin(coinId, coinPrice, totalQty);
 
 			} else if (choice == 13) {
-				System.out.println("가격을 수정할 코인 이름을 입력해주세요.");
-				String coinId = sc.next();
-				System.out.println("변경 가격을 숫자로 입력해주세요.");
-				Long coinPrice = Long.parseLong(sc.next());
+				try {
+					System.out.println("가격을 수정할 코인 이름을 입력해주세요.");
+					String coinId = sc.next();
+					System.out.println("변경 가격을 숫자로 입력해주세요.");
+					Long coinPrice = Long.parseLong(sc.next());
 
-				changeCoinPrice(coinId, coinPrice);
-
+					changeCoinPrice(coinId, coinPrice);
+				} catch (NumberFormatException e) {
+					System.out.println("잘못입력하셨습니다. 금액을 숫자로 입력해주세요");
+				}
+				
 			} else if (choice == 14) {
 				System.out.println("삭제할 코인 이름을 입력해주세요.");
 				String coinId = sc.next();
