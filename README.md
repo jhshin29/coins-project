@@ -5,14 +5,15 @@
 
 ## 구성원
 
-- 신지혜 : 주문 관련 기능 담당
-- 박세은 : 회원 관련 기능, Log 관련 기능 담당
-- 민경준 : 코인 관련 기능 담당
+### 👧🏻 신지혜 : 주문 관련 기능 담당
+
+### 👩🏻 박세은 : 회원 관련 기능, Log 관련 기능 담당
+
+### 🧑🏻 민경준 : 코인 관련 기능 담당
 
 ## 1. Modeling
 
-![Untitled](https://user-images.githubusercontent.com/29134944/130893858-18cf1b39-0f8a-4786-9533-3dc3cc7f1aee.png)
-
+![Untitled](https://user-images.githubusercontent.com/29134944/130906666-812c79b2-907a-440a-b67c-9e35ccf09ceb.png)
 
 ## 2. 테이블 생성
 
@@ -75,19 +76,19 @@ insert into ORDERS values(order_seq_id.NEXTVAL, '2021-05-27', 5, 1835, 'Doge', '
 commit;
 ```
 
-## 3. Function
+## 3. 주요 기능
 
 ## ☑️ 사용자
 
 1. 회원가입
 2. 보유 금액 변경
-3. 전체 코인 리스트 검색
+3. 전체 코인 리스트
 4. 코인 주문
-5. 주문수량변경
+5. 주문 수량 변경
 6. 주문 취소
-7. 나의 주문 조회
-8. 내 정보 조회
-9. 회원탈퇴
+7. 나의 주문 리스트 조회
+8. 회원 ID 조회
+9. 회원 탈퇴
 
 ## ☑️ 관리자
 
@@ -128,19 +129,19 @@ commit;
 - 예시 코드 (OrderDAO.java → insertOrder 메서드 중)
 
     ```java
-    if ((member.getHoldMoney() - newOrder.getTotalPrice()) >= 0) {  //보유 금액 제한 확인
-       if ((coin.getTotalQty()-order.getOrderQty()) >= 0) {      //총 수량 제한 확인
-    	       em.persist(newOrder);
-    		member.setHoldMoney(member.getHoldMoney() - newOrder.getTotalPrice());
-    		coin.setTotalQty(coin.getTotalQty()-order.getOrderQty());
-    		System.out.println("주문 등록 완료");
-    		log.info(memberId+" 님이" +coinId+ " 를 구매하셨습니다.");
+    	if ((member.getHoldMoney() - newOrder.getTotalPrice()) >= 0) {  //보유 금액 제한 확인
+    			if ((coin.getTotalQty()-order.getOrderQty()) >= 0) {      //총 수량 제한 확인
+    					em.persist(newOrder);
+    					member.setHoldMoney(member.getHoldMoney() - newOrder.getTotalPrice());
+    					coin.setTotalQty(coin.getTotalQty()-order.getOrderQty());
+    					System.out.println("주문 등록 완료");
+    					log.info(memberId+" 님이" +coinId+ " 를 구매하셨습니다.");
+    			} else {
+    					System.out.println("주문 수량이 전체 코인 갯수보다 많습니다. 수량을 줄여주세요.");
+    			}
     	} else {
-    		System.out.println("주문 수량이 전체 코인 갯수보다 많습니다. 수량을 줄여주세요.");
+    				System.out.println("주문 금액이 현재 보유 금액을 초과합니다. 보유 금액을 확인해주세요.");
     	}
-    } else {
-    	System.out.println("주문 금액이 현재 보유 금액을 초과합니다. 보유 금액을 확인해주세요.");
-    }
     ```
 
 ## 5. Code Review
